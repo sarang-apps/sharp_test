@@ -3,7 +3,11 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import icon from '../assets/icon.svg';
 import './App.global.css';
 
+import sharp from 'sharp';
+
 const Hello = () => {
+  console.log('sharp', sharp.format);
+  const text = 'TEST(should not be empty) + ' + sharp.format.jpeg.id;
   return (
     <div>
       <div className="Hello">
@@ -18,9 +22,9 @@ const Hello = () => {
         >
           <button type="button">
             <span role="img" aria-label="books">
-              📚
+              SHARP FORMAT:
             </span>
-            Read our docs
+            <p>{text}</p>
           </button>
         </a>
         <a
