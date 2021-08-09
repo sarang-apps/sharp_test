@@ -3,11 +3,36 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import icon from '../assets/icon.svg';
 import './App.global.css';
 
-import sharp from 'sharp';
+// import imageThumbnail from 'image-thumbnail';
+var filePath = '/Users/computerroom/Desktop/test_files';
+var thumbsFolder = '/Users/computerroom/Desktop/test_files/thumbs/';
 
+var Thumbnail = require('thumbnail');
+async function thumbgen() {
+  // try {
+  //   const thumbnail = await imageThumbnail(filePath);
+  //   console.log(thumbnail);
+  // } catch (err) {
+  //   console.error(err);
+  // }
+
+  let thumb = new Thumbnail(filePath, thumbsFolder);
+  thumb.ensureThumbnail(
+    'Screenshot 2021-02-08 at 3.40.15 PM.png',
+    160,
+    null,
+    function (err: any, filename: any) {
+      if (err != null) {
+        console.error(err);
+      }
+
+      console.log('done generating thumb', filename);
+    }
+  );
+}
 const Hello = () => {
-  console.log('sharp', sharp.format);
-  const text = 'TEST(should not be empty) + ' + sharp.format.jpeg.id;
+  thumbgen();
+  const text = 'TEST(should not be empty) + ';
   return (
     <div>
       <div className="Hello">

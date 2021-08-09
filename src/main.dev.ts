@@ -14,6 +14,10 @@ import path from 'path';
 import { app, BrowserWindow, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
+import installExtension, {
+  REACT_DEVELOPER_TOOLS,
+  REDUX_DEVTOOLS,
+} from 'electron-devtools-installer';
 import MenuBuilder from './menu';
 
 export default class AppUpdater {
@@ -39,16 +43,20 @@ if (
 }
 
 const installExtensions = async () => {
-  const installer = require('electron-devtools-installer');
   const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-  const extensions = ['REACT_DEVELOPER_TOOLS'];
+  const extensions = [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS];
+  installExtension(extensions, {
+    loadExtensionOptions: { allowFileAccess: true },
+    forceDownload: forceDownload,
+  }).catch(console.log);
+  // const installer = require('electron-devtools-installer');
+  // const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
+  // const extensions = ['REACT_DEVELOPER_TOOLS'];
 
-  return installer
-    .default(
-      extensions.map((name) => installer[name]),
-      forceDownload
-    )
-    .catch(console.log);
+  // return installer(extensions, {
+  //   loadExtensionOptions: { allowFileAccess: true },
+  //   forceDownload,
+  // }).catch(console.log);
 };
 
 const createWindow = async () => {
@@ -74,6 +82,7 @@ const createWindow = async () => {
     icon: getAssetPath('icon.png'),
     webPreferences: {
       nodeIntegration: true,
+      contextIsolation: false,
     },
   });
 
